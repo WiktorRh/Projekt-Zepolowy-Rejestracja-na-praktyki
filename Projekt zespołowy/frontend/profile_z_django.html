@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,900&subset=latin-ext">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
+    <title>Rejestracja na Praktyki</title>
+</head>
+<body>
+    <div id="wrapper">
+        <nav>
+            <div>
+                <img class="logo" src="img/uwm2018.png" height=60 alt="uwm">
+            </div>
+            <div class="navigation">
+                <ul>
+                    <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+                    <li><a href="{% url 'main' %}">Konto</a></li>
+                    <li><a href="{% url 'lista_praktyk' %}">Lista Praktyk</a></li>
+                    <li><a href="{% url 'main' %}">Strona główna</a></li>
+                </ul>
+            </div>
+        </nav>
+        <header>
+            <h1>Rejestracja na Praktyki</h1>
+            <div class="photo">
+                <img src="{% static 'img/uwm4.jpg' %}" alt="uwm">
+            </div>
+            <div class="napis">
+                <p>Studencie! Zacznij już dziś swoją karierę zawodową :)</p>
+            </div>
+        </header>
+        <footer id="footer">
+            <div class="notka">
+            <p>&copy; Copyright Projekt Zespołowy 2019</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static "/style.css" %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+</head>
+<body>
+
+                    {% if not user.nazwafirmy %}
+                        <li class="nav-item">
+                            <a class="nav-link active hvr-underline-from-center" href="{% url 'praktyki' %}">Lista
+                                dostępnych praktyk</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link active hvr-underline-from-center" href="{% url 'logout' %}">Wyloguj</a>
+                    </li>
+
+    <div id="mid" class="mid ">
+        <div class="container jumbotron">
+            {% if user.firma %}
+                <p>Dane Firmy : </p>
+                <p>Nazwa Firmy : {{ user.nazwafirmy }}</p>
+                <p>Email : {{ user.email }}</p>
+                <button class="btn btn-secondary bg-dark"><a class="text-white" href="{% url 'praktyki_firma' %}">Wyświetl
+                    listę własnych praktyk</a></button><br><br>
+                <button class="btn btn-secondary bg-dark"><a class="text-white" href="{% url 'create_practice' %}">Dodaj
+                    praktykę do systemu</a></button>
+            {% elif user.opiekun %}
+                <h2 class="text-center">KONTO OPIEKUNA</h2>
+                <p>Panel Opiekuna </p>
+                <button class="btn btn-secondary bg-dark"><a href="{% url 'listafirm' %}">Firmy oczekujące akceptacji</a></button><br><br>
+                <button class="btn btn-secondary bg-dark"><a href="{% url 'praktyki' %}">Lista Praktyk w systemie</a></button>
+            {% else %}
+                <p>Dane Studenta : </p>
+                <p>Imię i Nazwisko : {{ user.name }} {{ user.surname }}</p>
+                <p>Email : {{ user.email }}</p>
+                <p>Nr indeksu : {{ user.nrindeks }}</p>
+                {% for prak in praktyka %}
+                    <p>Bierzesz udział w praktyce : {{ prak }} </p><br>
+                {% endfor %}
+                <button class="btn btn-secondary bg-dark"><a class="text-white" href="{% url 'praktyki' %}">Wyświetl
+                    listę praktyk</a></button>
+            {% endif %}
+        </div>
+
+    </div>
+    <div id="footer" class="footer">
+        <div class="footer-copyright text-center py-3 bg-dark text-white">
+            © Copyright: Projekt Zespołowy 2018/2019
+        </div>
+    </div>
+</div>
+</body>
+</html>

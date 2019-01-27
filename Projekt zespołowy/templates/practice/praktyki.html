@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,900&subset=latin-ext">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static "lista_praktyk.css" %}">
+    <title>Rejestracja na Praktyki</title>
+</head>
+<body>
+<div id="wrapper">
+    <nav>
+        <div>
+            <img class="logo" src="{% static 'img/uwm2018.png' %}" height=60 alt="uwm">
+        </div>
+        <div class="navigation">
+            <ul>
+                <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+                <li><a href="{% url 'user_settings' %}">Konto</a></li>
+                <li><a href="{% url 'main' %}">Strona główna</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="naglowek_listaPraktyk">
+        <h1>Lista Praktyk: </h1>
+    </div>
+    <div class="box">
+        {% for praktyki in listapraktyk %}
+            <p>Stanowisko: {{ praktyki.stanowisko }}</p>
+            {% ifequal praktyki.wynagrodzenie '0' %}
+                <p>Wynagrodzenie: Bezpłatne</p>
+            {% else %}
+                <p>Wynagrodzenie: {{ praktyki.wynagrodzenie }}</p>
+            {% endifequal %}
+            <p>Opis: {{ praktyki.opis }}</p>
+            <p>Data rozpoczęcia: {{ praktyki.dataRozpoczecia }}</p>
+            <p>Data zakończenia: {{ praktyki.dataZakonczenia }}</p>
+            <p>Kontakt: {{ praktyki.id_Firma }}</p>
+            {% if user.firma or user.opiekun %}
+                <a href="usun_praktyke/{{ praktyki.id_Praktyki }}"><input type="submit" value="Usuń"></a>
+                <a href="edytuj_praktyke/{{ praktyki.id_Praktyki }}"><input type="submit" value="Edytuj"></a>
+            {% else %}
+                <a class="text-white" href="dolacz/{{ praktyki.id_Praktyki }}"><input type="submit" value="Wybierz"></a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <footer id="footer">
+        <div class="notka">
+            <p>&copy; Copyright Projekt Zespołowy 2019</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
+

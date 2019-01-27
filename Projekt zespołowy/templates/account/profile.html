@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,900&subset=latin-ext">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'user_settings.css' %}">
+    <title>Rejestracja na Praktyki</title>
+</head>
+<body>
+<div id="wrapper">
+    <nav>
+        <div>
+            <img class="logo" src="{% static 'img/uwm2018.png' %}" height=60 alt="uwm">
+        </div>
+        <div class="navigation">
+            <ul>
+                <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+                <li><a href="{% url 'praktyki' %}">Lista Praktyk</a></li>
+                <li><a href="{% url 'user_settings' %}">Konto</a></li>
+                <li><a href="{% url 'main' %}">Strona główna</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="box">
+        <img class="avatar" src="{% static 'img/avatar.png' %}" alt="avatar">
+        {% if user.firma %}
+        <p>Dane Firmy : </p>
+        <p>Nazwa Firmy : {{ user.nazwafirmy }}</p>
+        <p>Email : {{ user.email }}</p>
+        <a class="text-white" href="{% url 'praktyki_firma' %}"><input type="submit" value="Wyświetl praktyki"></a>
+        <a class="text-white" href="{% url 'create_practice' %}"><input type="submit" value="Dodaj praktykę"></a>
+        {% elif user.opiekun %}
+        <h2 class="text-center">KONTO OPIEKUNA</h2>
+        <p>Panel Opiekuna </p>
+        <a href="{% url 'listafirm' %}"><input type="submit" value="Lista Firm"></a>
+        <a href="{% url 'praktyki' %}"><input type="submit" value="Lista Praktyk"></a>
+        {% else %}
+        <h1>Mój Profil: </h1>
+        <p>Imie: {{ user.name }}</p>
+        <p>Nazwisko: {{ user.surname }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Nr indeksu: {{ user.nrindeks }}</p>
+        {% for prak in praktyka %}
+            <p>Bierzesz udział w praktyce : {{ prak }} </p>
+        {% endfor %}
+        <a href="{% url 'praktyki' %}"><input type="submit" value="Wyświetl listę praktyk"></a>
+    {% endif %}
+    </div>
+    </header>
+    <footer id="footer">
+        <div class="notka">
+            <p>&copy; Copyright Projekt Zespołowy 2019</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
